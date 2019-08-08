@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dao.IOrderDao">
+	<resultMap type="OrderBean" id="orderMap">
+		<id property="id" column="o_id" />
+		<result property="beginTime" column="o_stime" />
+		<result property="endTime" column="o_etime" />
+		<result property="status" column="o_status" />
+		<result property="price" column="o_price" />
+		<result property="words" column=" o_words" />
+		<collection property="carPortBean" select="com.project.dao.ICarPortDao.findCarPortById" column="o_r_id" />
+	</resultMap>
+
+	<select id="findOrderById" resultType="int" resultMap="orderMap">
+		SELECT * FROM t_order WHERE o_id=#{id}
+	</select>
+
+</mapper>

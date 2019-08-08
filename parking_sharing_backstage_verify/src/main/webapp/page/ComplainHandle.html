@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>后台管理系统-车位审核</title>
+		<!-- Bootstrap core CSS-->
+		<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom fonts for this template-->
+		<!-- <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+		<!-- Page level plugin CSS-->
+		<!-- <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet"> -->
+		<!-- Custom styles for this template-->
+		<!-- <link href="../css/sb-admin.css" rel="stylesheet"> -->
+		<style type="text/css">
+			#meng {
+				width: 100%;
+				height: 100%;
+				z-index: 1111;
+				position: fixed;
+				left: 0;
+				top: 0;
+				background-color: rgba(0, 0, 0, 0.5);
+				display: none;
+			}
+
+			.img-box {
+				text-align: center;
+				border: 1px solid #9A948E;
+				margin-left: -200px;
+				margin-top: -200px;
+				width: 800px;
+				height: 500px;
+				background: #fff;
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				overflow: hidden;
+			}
+
+			#img {
+				width: 100%;
+				height: 100%;
+				min-height: 100px;
+				min-width: 200px;
+				position: absolute;
+			}
+
+			.close {
+				position: fixed;
+				top: 5px;
+				right: 5px;
+				display: block;
+				height: 40px;
+				width: 40px;
+				line-height: 40px;
+				text-align: center;
+				border: 3px solid #fff;
+				border-radius: 50%;
+				cursor: pointer;
+				color: #fff;
+				font-weight: bold;
+			}
+
+			#vueApp p {
+				height: 16px;
+			}
+		</style>
+	</head>
+
+	<body style="margin: 0px;padding:0px;">
+
+		<!-- 页面非公共模块 开始 -->
+		<div class="row">
+			<div class="col-12" style="float: left;">
+				<table class="vueApp" style="width: 100%;">
+					<tr>
+						<!-- 投诉模块 -->
+						<td width="320px">
+							<!-- 投诉用户模块 -->
+							<div>
+								<div class="card mb-3" style="height: 15.5rem;">
+									<div class="card-header"><i class="fa fa-pie-chart"></i> 投诉方</div>
+									<div class="card-body">
+										<table class="table-striped table-bordered" style="width: 100%;height: 100%;">
+											<tr>
+												<td>用 户 名</td>
+												<td>{{tuUser.username}}</td>
+											</tr>
+											<tr>
+												<td>姓 名</td>
+												<td>{{btuUser.realname}}</td>
+											</tr>
+											<tr>
+												<td>手 机 号</td>
+												<td>{{btuUser.phone}}</td>
+											</tr>
+											<tr>
+												<td>身 份 证 号</td>
+												<td>{{tuUser.idcard}}</td>
+											</tr>
+											<tr>
+												<td>职 业</td>
+												<td>{{tuUser.job}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+
+							<!-- 被投诉用户模块 -->
+							<div>
+								<div class="card mb-3" style="height: 15.5rem;">
+									<div class="card-header"><i class="fa fa-pie-chart"></i> 被投诉方</div>
+									<div class="card-body">
+										<table class="table-striped table-bordered" style="width: 100%;height: 100%;">
+											<tr>
+												<td>用户名</td>
+												<td>{{btuUser.username}}</td>
+											</tr>
+											<tr>
+												<td>姓名</td>
+												<td>{{btuUser.realname}}</td>
+											</tr>
+											<tr>
+												<td>手机号</td>
+												<td>{{btuUser.phone}}</td>
+											</tr>
+											<tr>
+												<td>身份证号</td>
+												<td>{{tuUser.idcard}}</td>
+											</tr>
+											<tr>
+												<td>职业</td>
+												<td>{{tuUser.job}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+						</td>
+
+						<td>
+							<!-- 订单详情模块 -->
+							<div class="col-lg-12" style="float: left;">
+								<div class="card mb-3" style="height: 15.5rem;">
+									<div class="card-header"><i class="fa fa-pie-chart"></i> 订单详情</div>
+									<div class="card-body">
+										<!-- <canvas id="myPieChart" width="100%" height="100"></canvas> -->
+										<table class="table table-striped">
+											<tr>
+												<td>订单编号</td>
+												<td>{{orderBean.id}}</td>
+												<td data-toggle="modal" data-target="#myModal">订单状态</td>
+												<td v-if="orderBean.status == 0">未完成</td>
+												<td v-if="orderBean.status == 1">已完成</td>
+											</tr>
+											<tr>
+												<td>租赁开始时间</td>
+												<td>{{orderBean.beginTime}}</td>
+												<td>租赁完成时间</td>
+												<td>{{orderBean.endTime}}</td>
+											</tr>
+											<tr>
+												<td>车位地址</td>
+												<td>{{carPortBean.address}}</td>
+												<td>车位编号</td>
+												<td>{{carPortBean.number}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- 投诉详情 -->
+							<div class="col-lg-12" style="width: 52%;float: left;">
+								<div class="card mb-7" style="height: 15.5rem;">
+									<div class="card-header"><i class="fa fa-pie-chart"></i> 投诉详情</div>
+									<div class="card-body">
+										<img class="img-responsive imgs" alt="Responsive image" src="../img/cat001.jpg" width="173px" style="float: left;" />
+										<div id="meng">
+											<div class="img-box">
+												<img src="javascript:void(0)" id="img"> <span class="close">×</span>
+											</div>
+										</div>
+										<div style="float: left;margin-left: 0.625rem;">
+											<textarea name="message" maxlength="100" cols="25" rows="6" readonly="readonly" style="resize:none;">{{complainBean.content}}</textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 投诉处理模块  -->
+							<div class="col-lg-12" style="width: 48%;float: left;">
+								<div class="card mb-7" style="height: 15.5rem;">
+									<div class="card-header"><i class="fa fa-pie-chart"></i> 投诉受理</div>
+									<div class="card-body">
+										<form>
+											<textarea id="complainResult" maxlength="100" placeholder="请输入处理意见,不超过100个字" cols="48" rows="5" style="resize:none;"></textarea><br />
+											<button class="btn btn-default" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;
+											<button class="btn btn-danger" type="button" v-if="authority.a_coa==1" v-on:click="updateStatus(2)">投诉无效</button>&nbsp;&nbsp;&nbsp;&nbsp;
+											<button class="btn btn-primary" type="button" v-if="authority.a_coa==1" v-on:click="updateStatus(1)">提交处理意见</button>
+											<button class="btn btn-default" type="button" v-if="authority.a_coa==0">无权限操作</button>
+										</form>
+									</div>
+								</div>
+							</div>
+
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!-- 页面非公共模块 结束 -->
+
+		<!-- 自定义弹窗Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h1>test</h1>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary">保存</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="../vendor/jquery/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- 页面公共模块 -->
+<!-- 		<script type="text/javascript" src="../js/PublicHeader.js"></script>
+		<script type="text/javascript" src="../js/PublicLeft.js"></script> -->
+		<!-- Core plugin JavaScript-->
+		<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Page level plugin JavaScript-->
+		<script src="../vendor/chart.js/Chart.min.js"></script>   
+		<script src="../vendor/datatables/jquery.dataTables.js"></script>
+		<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="../js/sb-admin.min.js"></script>
+		<!-- Custom scripts for this page-->
+<!-- 		<script src="../js/sb-admin-datatables.min.js"></script>
+		<script src="../js/sb-admin-charts.min.js"></script> -->
+		<!-- axios -->
+		<script type="text/javascript" src="../js/axios.js"></script>
+		<script type="text/javascript" src="../js/complainHandle.js"></script>
+	</body>
+</html>

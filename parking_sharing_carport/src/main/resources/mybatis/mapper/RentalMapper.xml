@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.dao.IRentalDao"> 
+	<select id="listAll" resultType="RentalBean">
+		select * from t_rental where r_status = 0
+	</select>
+	<select id="getByCpId" resultType="RentalBean" parameterType="int">
+		select * from t_rental where r_cp_id=#{id} and r_status = 0
+	</select>
+	
+	<select id="getById" resultType="RentalBean" parameterType="int">
+		select * from t_rental where r_id=#{id}
+	</select>
+	<insert id="insertRental" parameterType="RentalBean">
+		insert into
+		t_rental(r_cp_id,r_stime,r_etime,r_price)
+		values(#{r_cp_id},#{r_stime},#{r_etime},#{r_price})
+	</insert>
+	<update id="updateRental" parameterType="RentalBean">
+		update t_rental set
+		r_stime = #{r_stime},r_etime=#{r_etime},r_price = #{r_price}
+		where r_id = #{r_id}
+	</update>
+	<update id="updateRentalStatus">
+		update t_rental set r_status = #{r_status} where r_id =#{id}
+	</update>
+</mapper>
+ 

@@ -1,0 +1,83 @@
+<style>
+    .tips {
+        font-size: .36rem;
+    }
+    .tips .text{
+        display: block;
+    }
+     .personal-img {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background:#fff;
+        /* border: 2px solid #fff; */
+        overflow: hidden;
+        margin: 0 auto .2rem auto;
+        text-align: center;
+    }
+	.td_1{
+		width: 2rem;
+	}
+	tr{
+		height: 34px;
+	}
+</style>
+<div id="bui-page" class="bui-page">
+	<header class="bui-bar">
+		<div class="bui-bar-left">
+			<a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i></a>
+		</div>
+		<div class="bui-bar-main">订单信息</div>
+		<div class="bui-bar-right">
+		</div>
+	</header>
+	<main>
+		<div id="step" class="bui-stepbar-line"></div>
+                <div >
+		            <div class="personal-img">
+		                <img src="images/headimg.png">
+		            </div>
+		             <div class="item-title" style="font-size: large;text-align: center;">{{user.u_username}}</div>
+		            <div class="bui-box-center">
+                    <div class="tips">
+                        <i class="icon-successfill xxlarge success"></i>
+                        <div class="item-title" style="font-size: large;">{{message.o_price}}.00<span style="font-size: small;">  元</span></div>
+                        <div v-if="status==3" class="item-text">钱款已打入对方账户</div>
+                    </div>
+                </div>
+		        </div>
+			        <table style="margin:.6rem auto;width: 80%;">
+						<tr">
+							<td class="td_1"s>创建时间</td>
+							<td>{{message.o_createtime}}</td>
+						</tr>
+						<tr>
+							<td class="td_1">订单时间</td>
+							<td >
+								<div style="float: left; width: 70%;">{{message.o_stime}} <br>{{message.o_etime}} </div> 
+								<div style="margin-top:.15rem">到</div>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="td_1">订单编号</td>
+							<td>{{message.o_code}}</td>
+						</tr>
+						<tr>
+							<td class="td_1">车位地址</td>
+							<td><span>{{carportBean.cp_community}}</span>{{carportBean.cp_address}}112号</td>
+						</tr>
+						<tr>
+							<td class="td_1">订单备注</td>
+							<td>{{message.o_words}}</td>
+						</tr>
+					</table>
+                
+                
+	</main>
+	<footer>
+		<div class="container-xy" >
+             <div  id="charge"   class="bui-btn round primary ">投诉</div>
+       </div>
+	</footer>
+</div>

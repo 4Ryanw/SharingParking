@@ -1,0 +1,51 @@
+<style>
+    .msg {
+        text-align: center;
+        padding:.5rem .2rem 0 .2rem;
+    }
+    .msg i{
+        font-size: 1.4rem;
+    }
+    .msg .msg-title {
+        padding-top: .5rem;
+        margin-bottom: .2rem;
+        font-size: .4rem;
+    }
+    .msg .msg-content {
+        font-size: .2rem;
+        color: #999;
+        margin-bottom: .2rem;
+        line-height:1.5;
+    }
+
+</style>
+<div class="bui-page" id="bui-page">
+	<header class="bui-bar">
+		<div class="bui-bar-left">
+            <!-- 左边按钮 -->
+            <a class="bui-btn btn-back"><i class="icon-back"></i></a>
+        </div>
+		<div class="bui-bar-main">我的钱包</div>
+		<div class="bui-bar-right">
+		</div>
+	</header>
+	<main>
+        <div class="msg">
+            <img src="images/1564987646(1).png"/>
+            <div class="msg-title">我的余额</div>
+            <div >￥<span style="font-size:.7rem;color:black;font-weight: bold;">{{money}}</span></div>
+            <div style="margin-top: .6rem;" class="bui-interval">
+            	<div class="bui-btn primary round">充值</div>
+            	<div style="background-color: green;color: white;" class="bui-btn  round">提现</div>	
+            </div>
+        </div>
+        
+       <!--  <div class="section-title">备用图标</div>
+        <div class="container-x">
+            <i class="icon-successfill success"></i>
+            <i class="icon-errorfill danger"></i>
+            <i class="icon-warningfill warning"></i>
+            <i class="icon-infofill warning"></i>
+        </div> -->
+    </main>
+</div>

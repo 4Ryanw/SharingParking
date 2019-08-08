@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+#complainTable table tr, th, td {
+	text-align: center;
+	height: 40px;
+}
+
+#complainTable table tr:hover {
+	background-color: #CDCDB4;
+}

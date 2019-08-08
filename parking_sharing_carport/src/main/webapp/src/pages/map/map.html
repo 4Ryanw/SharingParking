@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="css/baidumap.css" />
+<div class="bui-page">
+<header>
+   <div class="bui-bar-left">
+           <!-- 左边按钮 -->
+           <a class="bui-btn btn-back"><i class="icon-back"></i></a>
+       </div>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=YYXMCpSms6hDBtGu09ZhLmx0jNTOXeqd"></script>
+</header>
+<main>
+	<div id="BaiduMap"></div>
+	<div id="result">
+		搜索:<input type="text" id="suggestId" size="20" style="width:150px;" /><br>
+		<label for="province">省份:</label>
+		<select class="form-control" id="cmbProvince" name="cmbProvince"></select>
+		<label for="city">城市:</label>
+		<select class="form-control" id="cmbCity" name="cmbCity"></select><br>
+		<label for="county">区县:</label>
+		<select class="form-control" id="cmbArea" name="cmbArea"></select>
+		<input id="address_mes" type="text" />
+		<!-- 		<input type="button" onclick="add_control();" value="添加控件" />
+	<input type="button" onclick="delete_control();" value="删除控件" /> -->
+		<!-- <div id="result"></div> -->
+	</div>
+</main>
+
+<!-- 添加或删除缩放控件 -->
+<!-- <script type="text/javascript" src="js/BaiduMapJs/ControlButton.js"></script> -->
+<!-- 地图定位   其他地图的js文件需放在此代码之后-->
+   <!-- <script type="text/javascript" src="js/BaiduMapJs/location.js"></script>
+<script type="text/javascript" src="js/BaiduMapJs/search.js"></script>
+<script type="text/javascript" src="js/Address.js"></script> -->
+<!-- <script type="text/javascript" src="js/BaiduMapJs/baidumap.js"></script> -->
+<!-- <script type="text/javascript" src="js/BaiduMapJs/CarPortMap.js"></script> -->
+</div>

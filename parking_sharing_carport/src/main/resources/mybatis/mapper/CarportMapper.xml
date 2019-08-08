@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.dao.ICarportDao">
+	<select id="getById" resultType="CarportBean" parameterType="int">
+		select * from t_carport where cp_id=#{id}
+	</select>
+	<select id="listAll" resultType="CarportBean">
+		select * from t_carport;
+	</select>
+	<insert id="insertCarport" parameterType="CarportBean">
+		insert into
+		t_carport(cp_describe,cp_community,cp_address,cp_number,cp_certificateNumber,cp_certificate,cp_status,cp_owner_id)
+		values(#{cp_describe},#{cp_community},#{cp_address},#{cp_number},#{cp_certificateNumber},#{cp_certificate},#{cp_status},#{cp_owner_id});
+	</insert>
+	<update id="updateCarport">
+		update t_carport set cp_status = #{cp_status} where cp_id=#{cp_id} 	
+	</update>
+	<delete id="deleteCarport">
+		delete from t_carport where cp_id =#{id}
+	</delete>
+	<select id="listByOwnerId" resultType="CarportBean">
+		select * from t_carport where cp_owner_id = #{id};
+	</select>
+</mapper>
+ 

@@ -1,0 +1,53 @@
+
+<div class="bui-page" id="bui-page">
+	<header class="bui-bar">
+		<div class="bui-bar-left">
+			
+		</div>
+		<div class="bui-bar-main">交互列表</div>
+		<div class="bui-bar-right">
+		</div>
+	</header>
+	<main>
+		<ul id="listview" class="bui-listview">
+            <li v-for="msg in list" :mid="msg.m_id">
+                <div  class="bui-btn bui-box-align-top">
+                    <div class="bui-icon primary">
+                       <i class="icon-alert"></i>
+                    </div>
+                    <div class="span1">
+                        <h3 class="item-title">系统消息</h3>
+                        <p class="item-text">{{msg.m_content}}</p>
+                    </div>
+                    <span class="time">13:05</span>
+                </div>
+            </li>
+            <li>
+                <div class="bui-btn bui-box-align-top">
+                    <div class="bui-icon success">
+                        <i class="icon-chat"></i>
+                    </div>
+                    <div class="span1">
+                        <h3 class="item-title">广告</h3>
+                        <p class="item-text">车位招商广告</p>
+                    </div>
+                    <span class="time">昨天</span>
+                </div>
+            </li>
+			<li>
+				<div class="bui-btn bui-box-align-top">
+                    <div class="bui-icon warning">
+                        		温
+                    </div>
+                    <div class="span1">
+                        <h3 class="item-title">温攀</h3>
+                        <p class="item-text">在?租个车位</p>
+                    </div>
+                    <span class="time">2018-07-04</span>
+                </div>
+			</li>
+
+		</ul>
+
+	</main>
+</div>

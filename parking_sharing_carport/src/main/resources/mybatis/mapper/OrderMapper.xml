@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.dao.IOrderDao">
+	<select id="getById" resultType="OrderBean" parameterType="int">
+		select
+		* from t_order where o_id=#{id}
+	</select>
+	<insert id="insert" parameterType="OrderBean">
+		insert into t_order
+		values(null,#{o_u_id},#{o_r_id},#{o_price},#{o_stime},#{o_etime},#{o_status},#{o_words},#{o_createtime},#{o_code})
+	</insert>
+	<update id="update">
+		update t_order set o_status = #{status}
+		where o_id = #{id};
+	</update>
+	<select id="listbyOwnerId" resultType="OrderBean">
+		select * from t_order where o_r_id in (select r_id from t_rental where r_cp_id in(select cp_id from t_carport where cp_owner_id = #{ownerid}))
+	</select>
+	<select id="listByCpid" resultType="OrderBean">
+		select * from
+		t_order where o_r_id in (select r_id from t_rental where r_cp_id =
+		#{cp}) and o_status = 0
+	</select>
+	<select id="listUnderwayByUserId" resultType="OrderBean">
+		select * from
+		t_order where o_u_id  = #{uid}
+		and o_status = 1
+	</select>
+	<select id="listByRentalId" resultType="OrderBean">
+		select * from t_order where o_r_id = #{rentalId}
+	</select>
+	<select id="listByUserId" resultType="OrderBean">
+		select * from t_order where o_u_id = #{uid} ORDER by o_createtime DESC
+	</select>
+	<select id="listBantime"  resultMap="timeMap">
+		select o_stime,o_etime from t_order where o_r_id = #{rentalId}
+	</select>
+	<resultMap type="TimeBean" id="timeMap">
+		<result column="o_stime" property="start"/>
+		<result column="o_etime" property="end" />
+	</resultMap>
+</mapper>
+ 

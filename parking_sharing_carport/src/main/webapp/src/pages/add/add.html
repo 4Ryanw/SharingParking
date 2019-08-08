@@ -1,0 +1,79 @@
+<style>
+  .page-form .bui-fluid-space-3 .span1 {
+    margin-bottom: .2rem;
+  }
+  .selected-val {
+    margin-right: .1rem;
+  }
+</style>
+<div class="bui-page page-form" id="zccw">
+  <header class="bui-bar">
+    <div class="bui-bar-left">
+		<a class="bui-btn btn-back"><i class="icon-back"></i></a>
+	</div>
+    <div class="bui-bar-main">注册车位</div>
+    <div class="bui-bar-right"> </div>
+  </header>
+  <main>
+
+    <h3 class="section-title">信息填写</h3>
+    <ul class="bui-list">
+    <li id="chooseCity" class="bui-btn bui-box clearactive">
+        <label class="bui-label">地址选择</label>
+        <div class="span1" > </div>
+        <div>
+          <div id="address" class="bui-box">
+            <div id="shen" class="selected-val"></div>
+            <div id="shi" class="selected-val"></div>
+            <div  id="qu" class="selected-val"></div>
+          </div>
+        </div> <i class="icon-listright"></i> </li>
+      
+      <li class="bui-btn bui-box clearactive">
+        <label class="bui-label" for="community">小区</label>
+        <div class="span1">
+          <div class="bui-input user-input">
+            <input id="community" type="text" value="" placeholder="请输入小区名"> </div>
+        </div>
+      </li>
+      <li class="bui-btn bui-box clearactive">
+        <label class="bui-label" for="number">车位号:</label>
+        <div class="span1">
+          <div id="passwordInput" class="bui-input">
+            <input id="number" type="text" placeholder="请输入车位编号"> </div>
+        </div>
+      </li>
+       <li class="bui-btn bui-box clearactive">
+        <label class="bui-label" for="certifacateNumber">产权证</label>
+        <div class="span1">
+          <div class="bui-input user-input">
+            <input id="certifacateNumber" type="text" value="" placeholder="请输入车位产权证书号"> </div>
+        </div>
+      </li>
+    </ul>
+
+<h3 class="section-title">描述</h3>
+    <ul class="bui-list">
+      <li class="bui-btn clearactive">
+        <div id="commentContent" class="bui-input">
+          <textarea class="bui-input" id="describe" cols="30" rows="4" placeholder="请输入描述20字以内"></textarea>
+        </div>
+      </li>
+    </ul>
+
+    <div class="section-title"> 上传图片: </div>
+    <div id="facePhoto" class="bui-upload bui-fluid-space-4">
+      <div class="span1">
+        <div class="bui-btn"> <i class="icon-plus large"></i> </div>
+      </div>
+    </div>
+    
+    <div class="container-y">
+      <div class="bui-box-space">
+        <div class="span1">
+          <div @click="zccwClick" class="bui-btn round  primary" >提交审核</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

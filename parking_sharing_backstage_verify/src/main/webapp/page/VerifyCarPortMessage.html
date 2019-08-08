@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>后台管理系统-车位审核</title>
+		<!-- Bootstrap core CSS-->
+		<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom fonts for this template-->
+		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<!-- Page level plugin CSS-->
+		<link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+		<!-- Custom styles for this template-->
+		<link href="../css/sb-admin.css" rel="stylesheet">
+		<style type="text/css">
+			#meng {
+				width: 100%;
+				height: 100%;
+				z-index: 1111;
+				position: fixed;
+				left: 0;
+				top: 0;
+				background-color: rgba(0, 0, 0, 0.5);
+				display: none;
+			}
+
+			.img-box {
+				border: 1px solid #9A948E;
+				width: 800px;
+				height: 500px;
+				background: #fff;
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				margin-left: -200px;
+				margin-top: -200px;
+				overflow: hidden;
+			}
+
+			#img {
+				width: 400px;
+				/* height: 300px; */
+				min-height: 100px;
+				min-width: 200px;
+				position: absolute;
+			}
+
+			.close {
+				position: fixed;
+				top: 5px;
+				right: 5px;
+				display: block;
+				height: 40px;
+				width: 40px;
+				line-height: 40px;
+				text-align: center;
+				border: 3px solid #fff;
+				border-radius: 50%;
+				cursor: pointer;
+				color: #fff;
+				font-weight: bold;
+			}
+
+			.img {
+				margin-top: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- 表格 begin -->
+		<div class="card mb-3" style="height: 510px;">
+			<div id="vueApp" class="card-body">
+				<!-- 业主模块 -->
+				<div style="float: left; width: 60%;">
+					<div class="card mb-3" style="height: 14rem;">
+						<div class="card-header"><i class="fa fa-pie-chart"></i> 业主个人信息</div>
+						<div class="card-body">
+							<!-- <canvas id="myPieChart" width="100%" height="100"></canvas> -->
+							<div style="float: left;margin-left: 0.625rem;">
+								<table class="table table-striped table-bordered">
+									<tr>
+										<td>用户名：</td>
+										<td>{{carPort.userBean.username}}</td>
+										<td>姓&nbsp;&nbsp;&nbsp; 名：</td>
+										<td>{{carPort.userBean.realname}}</td>
+									</tr>
+									<tr>
+										<td>职&nbsp;&nbsp;&nbsp; 业：</td>
+										<td>{{carPort.userBean.job}}</td>
+										<td>身份证号：</td>
+										<td>{{carPort.userBean.idcard}}</td>
+									</tr>
+									<tr>
+										<td>手机号：</td>
+										<td>{{carPort.userBean.phone}}</td>
+										<td>家庭住址：</td>
+										<td>{{carPort.userBean.address}}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 车位模块 -->
+				<div style="float: left; width: 40%;">
+					<div class="card mb-3" style="height: 14rem;">
+						<div class="card-header"><i class="fa fa-pie-chart"></i> 车位信息</div>
+						<div class="card-body">
+							<!-- <canvas id="myPieChart" width="100%" height="100"></canvas> -->
+							<div class="table-responsive" style="float: left;margin-left: 0.625rem;">
+								<table width="100%" height="150px">
+									<tr>
+										<td width="150px">车位地址</td>
+										<td>{{carPort.address}}</td>
+									</tr>
+									<tr>
+										<td>车库编号</td>
+										<td>{{carPort.number}}</td>
+									</tr>
+									<tr>
+										<td>车位产权证编号</td>
+										<td>{{carPort.certificateNumber}}</td>
+									</tr>
+									<tr>
+										<td>车位审批状态</td>
+										<td v-if="carPort.status==0">待审核</td>
+										<td v-if="carPort.status==1">已通过</td>
+										<td v-if="carPort.status==2">未通过</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 产权证模块 -->
+				<div style="float: left; width: 60%;">
+					<div class="card mb-3" style="height: 15.5rem;">
+						<div class="card-header"><i class="fa fa-pie-chart"></i> 附件（点击图片可查看大图）</div>
+						<div class="card-body cardImg">
+							<img id="idcart1" class="imgs" src="../img/IMG_6576.PNG" height="170px" style="float: left;" />
+							<img id="carCord" class="imgs" :src="'../img/'+carPort.certificate" height="170px" style="float: left;" />
+						</div>
+						<div id="meng">
+							<div class="img-box">
+								<img src="" id="img"> <span class="close">×</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 审核处理模块 -->
+				<div style="float: left; width: 40%;">
+					<div class="card mb-3" style="height: 15.5rem;">
+						<div class="card-header"><i class="fa fa-pie-chart"></i> 审核意见</div>
+						<div class="card-body">
+							<!-- <canvas id="myPieChart" width="100%" height="100"></canvas> -->
+							<form>
+								<textarea id="resultMessage" maxlength="100" placeholder="请输入审核意见,不超过100个字" cols="48" rows="5" style="resize:none;"></textarea><br />
+								<button class="btn btn-default" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button class="btn btn-danger" type="button" v-if="authority==1" v-on:click="updateStatus(2)">审核不通过</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button class="btn btn-primary" type="button" v-if="authority==1" v-on:click="updateStatus(1)">审核通过</button>
+								<button class="btn btn-default" type="button" v-if="authority==0">无权限操作</button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- 表格 end -->
+
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="../vendor/jquery/jquery.min.js"></script>
+		<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- 页面公共模块 -->
+		<script type="text/javascript" src="../js/PublicHeader.js"></script>
+		<script type="text/javascript" src="../js/PublicLeft.js"></script>
+		<!-- Core plugin JavaScript-->
+		<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Page level plugin JavaScript-->
+		<script src="../vendor/chart.js/Chart.min.js"></script>
+		<script src="../vendor/datatables/jquery.dataTables.js"></script>
+		<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="../js/sb-admin.min.js"></script>
+		<!-- Custom scripts for this page-->
+		<script src="../js/sb-admin-datatables.min.js"></script>
+		<script src="../js/sb-admin-charts.min.js"></script>
+		<!-- vue开发环境版本，包含了有帮助的命令行警告 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- axios -->
+		<script type="text/javascript" src="../js/axios.js"></script>
+		<script type="text/javascript" src="../js/VerifyCarPortMessage.js"></script>
+	</body>
+</html>

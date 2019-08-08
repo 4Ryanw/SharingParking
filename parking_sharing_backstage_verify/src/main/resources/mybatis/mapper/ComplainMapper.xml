@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dao.IComplainDao">
+	<!-- 对象关系映射 -->
+	<resultMap type="ComplainBean" id="complainMap">
+		<id property="id" column="co_id"/>
+		<result property="img" column="co_img"/>
+		<result property="status" column="co_status"/>
+		<result property="orderId" column="co_o_id"/>
+		<result property="content" column="co_content"/>
+		<result property="createTime" column="co_createtime"/>
+		<result property="handleTime" column="co_handletime"/>
+		<result property="result" column="co_result"/>
+		<collection property="tuUser" ofType="UserBean" select="com.project.dao.IUserDao.findUserById" column="co_tuid" />
+		<collection property="btuUser" ofType="UserBean" select="com.project.dao.IUserDao.findUserById" column="co_btuid" />
+	</resultMap>
+	
+	<!-- 通过投诉id查询投诉记录 -->
+	<select id="findComplainByStatus" parameterType="int" resultMap="complainMap">
+		SELECT * FROM t_complain WHERE co_status=#{status}
+	</select>
+	
+	<!-- 通过投诉处理状态查询投诉记录 -->
+	<select id="findComplainById" parameterType="int" resultMap="complainMap">
+		SELECT * FROM t_complain WHERE co_id=#{id}
+	</select>
+	
+	<!-- 分页查询投诉记录 -->
+	<select id="findComplainByPage" resultMap="complainMap">
+		SELECT * FROM t_complain LIMIT #{beginIndex},#{size}
+	</select>
+	
+	<!-- 通过投诉处理状态分页查询投诉记录 -->
+	<select id="findComplainByStatusAndPage" resultMap="complainMap">
+        SELECT * FROM t_complain WHERE co_status=#{status} LIMIT #{beginIndex},#{size}
+	</select>
+	
+	<select id="findComplainByTuid" parameterType="int" resultMap="complainMap">
+        SELECT * FROM t_complain WHERE co_tuid=#{tuId}
+	</select>
+	
+	<select id="findComplainByBtuid" parameterType="int" resultMap="complainMap">
+        SELECT * FROM t_complain WHERE co_btuid=#{btuId}
+    </select>
+    	
+</mapper>

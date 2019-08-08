@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <style type="text/css">
+        	.page div a :HOVER {cursor: pointer!important;}
+        </style>
+    </head>
+    <body>
+        
+        <div class="layui-fluid" id="app">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                       
+                        <div class="layui-card-body layui-table-body layui-table-main">
+                            <table class="layui-table layui-form">
+                                <thead>
+                                  <tr>
+                                    <!-- <th>
+                                      <input type="checkbox" lay-filter="checkall" name="" lay-skin="primary">
+                                    </th> -->
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th>手机</th>
+                                    <th>地址</th>
+                                    <th>操作</th>
+                                   </tr>
+                                </thead>
+                                <tbody>
+                                  <tr v-for="(user,index) in users">
+                                    <!-- <td>
+                                      <input type="checkbox" name="id" value="1"   lay-skin="primary"> 
+                                    </td> -->
+                                    <td>{{user.u_id}}</td>
+                                    <td>{{user.u_realname}}</td>
+                                    <td>{{user.u_phone}}</td>
+                                    <td>{{user.u_address}}</td>
+                                    <td class="td-manage">
+                                    	<ul v-if="authority.a_ua==1">
+                                    		<li v-if="user.u_state==1">
+                                    			<span>已封号</span>
+                                    			<input type="button" class="layui-icon layui-btn danger" @click="updateState(user.u_id,0)" value="启用">
+                                    		</li>
+                                    		<li v-else-if="user.u_state==0">
+                                    			<input type="button" class="layui-icon layui-btn layui-btn-danger danger" @click="updateState(user.u_id,1)" value="禁用">
+                                    		</li>
+                                    	</ul>
+                                      	<ul v-else-if="authority.a_ua==0">
+                                      		<span>您暂无操作权限</span>
+                                      	</ul>
+                          				
+                                  	</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="layui-card-body ">
+                            <div class="page">
+                                <div>
+                                  <a   @click="firstPage">首页</a>
+                                  <a   @click="prevPage">上一页</a>
+                                  <a>{{page}}/{{pageNumber}}</a>
+                                  <a   @click="nextPage">下一页</a>
+                                  <a   @click="lastPage">末页</a>
+                                  <a>总人数：{{userNumber}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <script type="text/javascript" src="../js/jQuery-2.2.2-min.js"></script>
+        <script type="text/javascript" src="../js/vue.js" ></script>
+		<script type="text/javascript" src="../js/axios.min.js"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+	        	el:"#app",
+	        	data:{
+	        		users:[],
+	        		page:0,
+	        		size:8,
+	        		pageNumber:0,	//总页数
+	        		userNumber:0,
+	        		authority:[], 	//权限
+	        	},
+	        	created(){
+	        		this.page += 1;
+	        		axios.get("/user/findAllUser?page="+this.page+"&size="+this.size).then(res => {
+	        				this.users = res.data.list;
+	        				this.pageNumber = res.data.pageNumber;
+	        				this.userNumber = res.data.userNumber;
+	        			}).catch(function (err) {
+	        				console.log(err);
+	        			});
+	        		axios.get("/user/findMyAuthroity").then(res=>{
+	        			console.info(res.data)
+	        			this.authority = res.data;
+	        		})
+	        	},
+	        	methods:{
+	        		updateState:function(u_id,u_state){
+       					axios.post("/user/updateState?u_id="+u_id+"&u_state="+u_state+"&page="+this.page)
+           				.then(res=>{
+           					if(res.data==null){
+           						return;
+           					}
+         	        			this.users = res.data.list;
+      	        				this.pageNumber = res.data.pageNumber;
+      	        				this.userNumber = res.data.userNumber;
+           				})
+           				.catch(res=>{
+           					console.info(res);
+           				})
+        			},
+	        		prevPage:function(){
+	        			if(this.page > 1){
+	        				this.page -= 1;
+	        				axios.get("/user/showAllUser?page="+this.page+"&size="+this.size).then(res => {
+	        					console.log(res.data);
+	        					this.users = res.data.list;
+		        				this.pageNumber = res.data.pageNumber;
+		        				this.userNumber = res.data.userNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			};
+	        		},
+	        		nextPage:function(){
+	        			if(this.page < this.pageNumber){
+	        				this.page += 1;
+	        				axios.get("/user/showAllUser?page="+this.page+"&size="+this.size).then(res => {
+	        					console.log(res.data);
+	        					this.users = res.data.list;
+		        				this.pageNumber = res.data.pageNumber;
+		        				this.userNumber = res.data.userNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			}
+	        		},
+	        		firstPage:function(){
+	        			if(this.page != 1){
+	        				this.page = 1;
+		        			axios.get("/user/showAllUser?page="+this.page+"&size="+this.size).then(res => {
+	        					console.log(res.data);
+	        					this.users = res.data.list;
+		        				this.pageNumber = res.data.pageNumber;
+		        				this.userNumber = res.data.userNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			}
+	        		},
+	        		lastPage:function(){
+	        			if(this.page != this.pageNumber){
+	        				this.page = this.pageNumber;
+		        			axios.get("/user/showAllUser?page="+this.page+"&size="+this.size).then(res => {
+	        					console.log(res.data);
+	        					this.users = res.data.list;
+		        				this.pageNumber = res.data.pageNumber;
+		        				this.userNumber = res.data.userNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			}
+	        		},
+	        		sendRequest:function(){
+	        			axios.get("/user/showAllUser?page="+this.page+"&size="+this.size).then(res => {
+        					console.log(res.data);
+        					this.users = res.data.list;
+	        				this.pageNumber = res.data.pageNumber;
+	        				this.userNumber = res.data.userNumber;
+        				}).catch(function (err) {
+        					console.log(err);
+        				});
+	        		}
+	        	},
+	        })
+		</script>
+    </body>
+    <script>
+      layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var  form = layui.form;
+
+
+        // 监听全选
+        form.on('checkbox(checkall)', function(data){
+
+          if(data.elem.checked){
+            $('tbody input').prop('checked',true);
+          }else{
+            $('tbody input').prop('checked',false);
+          }
+          form.render('checkbox');
+        }); 
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+
+
+      });
+
+       /*用户-停用*/
+      function member_stop(obj,id){
+          layer.confirm('确认要停用吗？',function(index){
+
+              if($(obj).attr('title')=='启用'){
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title','停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!',{icon: 5,time:1000});
+
+              }else{
+                $(obj).attr('title','启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!',{icon: 5,time:1000});
+              }
+              
+          });
+      }
+
+      /*用户-删除*/
+      function member_del(obj,id){
+          layer.confirm('确认要删除吗？',function(index){
+              //发异步删除数据
+              $(obj).parents("tr").remove();
+              layer.msg('已删除!',{icon:1,time:1000});
+          });
+      }
+
+
+
+      function delAll (argument) {
+        var ids = [];
+
+        // 获取选中的id 
+        $('tbody input').each(function(index, el) {
+            if($(this).prop('checked')){
+               ids.push($(this).val())
+            }
+        });
+  
+        layer.confirm('确认要删除吗？'+ids.toString(),function(index){
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', {icon: 1});
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+      }
+    </script>
+</html>

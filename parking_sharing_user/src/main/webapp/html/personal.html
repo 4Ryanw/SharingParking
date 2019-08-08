@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>个人中心</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+	<style>
+		.content-block{margin: 9rem 0rem 0rem 0!important;}
+		.item-input{text-align: right;}
+		.header_title{padding-left: 0.75rem;height: 3rem;}
+		.show_down{background-color: #EFEFF4;}
+		.back_page{height: 100%;float: left;}
+	</style>
+  </head>
+  <body>
+    <div class="page-group">
+        <div class="page page-current">
+			<header class="bar bar-nav">
+				<div class="header_title">
+					<div class="back_page" style="width: 10%;"><</div>
+					
+					<div class='title' style="width: 80%;position: relative;top:-0px;left:20px">个人中心</div>
+				</div>
+				
+			</header>
+			<div class="content">
+			  <div class="list-block">
+				<ul>
+				  <!-- Text inputs -->
+				  <li>
+					<div class="item-content">
+					  <div class="item-media"><i class="icon icon-form-name"></i></div>
+					  <div class="item-inner">
+						<div class="item-title label">个人信息</div>
+						<div class="item-input">
+						  <span class="person_setting">&gt;</span>
+						</div>
+					  </div>
+					</div>
+				  </li>
+				  <li>
+					<div class="item-content">
+					  <div class="item-media"><i class="icon icon-form-email"></i></div>
+					  <div class="item-inner">
+						<div class="item-title label">更改手机号</div>
+						<div class="item-input">
+						  <span class="person_setting show_phone">133****4593 &gt;</span>
+						</div>
+					  </div>
+					</div>
+				  </li>
+				  <li>
+					<div class="item-content">
+					  <div class="item-media"><i class="icon icon-form-password"></i></div>
+					  <div class="item-inner">
+						<div class="item-title label">密码设置</div>
+						<div class="item-input">
+						  <span class="person_setting"> &gt;</span>
+						</div>
+					  </div>
+					</div>
+				  </li>
+				  <li style="text-align:center;margin:20px;">
+						<a onclick="loginout()" href="">注销</a>
+				  </li>
+				</ul>
+			  </div>
+			  
+			</div>
+        </div>
+    </div>
+
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+	<script type="text/javascript" src="../js/jQuery-2.2.2-min.js"></script>
+	<script>
+		$(function(){
+			//进入页面发送请求获取用户信息
+			$.ajax({
+				type:"get",
+				url:"http://127.0.0.1:9001/user/findPerson",
+				dataType:"json",
+				success:function(mes){
+					var phone = "&gt;";
+					if (mes.u_phone!=null) {
+						phone = geTel(mes.u_phone)+"&gt;";
+					} 
+					
+					$(".show_phone").html(phone);
+				}
+			})
+			
+			//获取操作选项
+			var lis = $(".content li")
+			lis.each(function(i){
+				$(this).click(function(){
+					if (i==0) {
+						location.href="person_info.html";
+					} else if(i==1){
+						location.href="person_phone_update.html"
+					}else if(i==2){
+						location.href="person_password_update.html"
+					}
+				})
+				$(this).mousedown(function(){
+					$(this).attr("class","show_down");
+				})
+				$(this).mouseup(function(){
+					$(this).removeAttr("class","show_down");
+				})
+			})
+			
+		})
+		function loginout(){
+			$.ajax({
+				type:"get",
+				url:"http://127.0.0.1:9001/user/logout",
+				success:function(mes){
+					
+					location.href="/login.html"
+				}
+			})
+		}
+		$(".back_page").click(function(){
+			location.href="http://127.0.0.1:8020/src/index.html"   //需要跳转的地址
+		})
+		function geTel(tel){
+			var reg = /^(\d{3})\d{4}(\d{4})$/;  
+			return tel.replace(reg, "$1****$2");
+		}
+	</script>
+  </body>
+</html>

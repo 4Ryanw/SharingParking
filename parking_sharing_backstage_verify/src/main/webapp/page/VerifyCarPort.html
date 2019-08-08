@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>后台管理系统-车位审核</title>
+		<!-- Bootstrap core CSS-->
+		<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom fonts for this template-->
+		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<!-- Page level plugin CSS-->
+		<link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+		<!-- Custom styles for this template-->
+		<link href="../css/sb-admin.css" rel="stylesheet">
+		<link href="../css/complain.css" rel="stylesheet">
+	</head>
+
+	<body style="margin: 0px;padding:0px;">
+
+		<!-- 页面非公共模块 开始 -->
+		<!-- 表格 begin -->
+		<div id="verifyTable" class="card mb-3" style="height: 660px; width: 100%;">
+			<div class="card-header">
+				<i class="fa fa-table"></i> 待审核车位</div>
+			<div class="card-body">
+				<table width="100%" cellspacing="0">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>用户名</th>
+							<th>车位产权证编号</th>
+							<th>车位地址</th>
+							<th>添加时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="carPortBean in carPortList">
+							<td>{{carPortBean.id}}</td>
+							<td>{{carPortBean.userBean.username}}</td>
+							<td>{{carPortBean.certificateNumber}}</td>
+							<td>{{carPortBean.address}}</td>
+							<td>{{carPortBean.createTime}}</td>
+							<td>
+							     <a class="btn btn-primary" v-if="authority.a_cpa==1" :href="'VerifyCarPortMessage.html?id='+carPortBean.id">审核</a>
+							     <a class="btn btn-primary" v-if="authority.a_cpa==0">无权限</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div style="text-align: center;">
+				<button class="btn btn-link" v-on:click="prevPage">上一页</button>&nbsp;&nbsp;
+				<span>{{page}} / {{pageNumber}}</span>&nbsp;&nbsp;&nbsp;
+				<button class="btn btn-link" v-on:click="nextPage">下一页</button>
+			</div>
+		</div>
+		<!-- 表格 end -->
+		<!-- 页面非公共模块 结束 -->
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="../vendor/jquery/jquery.min.js"></script>
+		<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- 页面公共模块 -->
+		<script type="text/javascript" src="../js/PublicHeader.js"></script>
+		<script type="text/javascript" src="../js/PublicLeft.js"></script>
+		<!-- Core plugin JavaScript-->
+		<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Page level plugin JavaScript-->
+		<script src="../vendor/chart.js/Chart.min.js"></script>
+		<script src="../vendor/datatables/jquery.dataTables.js"></script>
+		<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="../js/sb-admin.min.js"></script>
+		<!-- Custom scripts for this page-->
+		<script src="../js/sb-admin-datatables.min.js"></script>
+		<script src="../js/sb-admin-charts.min.js"></script>
+		<!-- vue开发环境版本，包含了有帮助的命令行警告 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<!-- axios -->
+		<script type="text/javascript" src="../js/axios.js"></script>
+		<script type="text/javascript" src="../js/VerifyCarPort.js"></script>
+	</body>
+</html>

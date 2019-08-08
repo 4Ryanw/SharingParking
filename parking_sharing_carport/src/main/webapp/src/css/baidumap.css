@@ -1,0 +1,26 @@
+body,
+html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	font-family: "微软雅黑";
+	text-align: center;
+}
+
+#BaiduMap {
+	height: 86%;
+	width: 100%;
+}
+
+#r-result {
+	width: 100%;
+	font-size: 14px;
+	line-height: 20px;
+	background-color: lightgray;
+}
+
+.div_name:hover {
+	cursor: pointer;
+	font-size: 0.625rem;
+	padding: 5px;
+}

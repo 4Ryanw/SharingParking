@@ -1,0 +1,76 @@
+<div class="bui-page">
+    <header  class="bui-bar" >
+  	<!--城市选择-->
+			<div class=bui-bar-left>
+			
+			</div>
+			<!--搜索框-->
+			<div class="bui-bar-main" >
+	      <div id="btnSearchDialog" class="bui-input" >
+	         <i class="icon-search"></i><span class="placeholder">搜索</span>
+	      </div>
+   		</div>
+		<div id="bdumap" style="text-align: center;" class="bui-bar-right">
+				<div  style="color: white;font-size:16px;margin-top: .20rem;">地图</div>
+		</div>
+	</header>
+        <div class="bui-box">
+               <div class="span1">
+                <!-- 单个下拉结构 -->
+                <div id="uiDoropdownClass" class="bui-dropdown">
+                    <div class="bui-btn bui-box">
+                        <div class="span1">区域</div>
+                        <i class="icon-dropdown"></i>
+                    </div>
+                    <ul class="bui-list">
+                        <li class="bui-btn" value="全城">全城</li>
+                        <li class="bui-btn" value="附近">附近</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span1">
+                <!-- 单个下拉结构 -->
+                <div id="uiDoropdownClass" class="bui-dropdown">
+                    <div class="bui-btn bui-box">
+                        <div class="span1">排序</div>
+                        <i class="icon-dropdown"></i>
+                    </div>
+                    <ul class="bui-list">
+                        <li class="bui-btn" value="综合排序">综合排序</li>
+                        <li class="bui-btn" value="离我最近">离我最近</li>
+                        <li class="bui-btn" value="人气优先">人气优先</li>
+                        <li class="bui-btn" value="价格最低">价格最低</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span1">
+                <!-- 单个下拉结构 -->
+                <div id="uiDoropdownClass" class="bui-dropdown">
+                    <div class="bui-btn bui-box">
+                        <div class="span1">停车时长</div>
+                        <i class="icon-dropdown"></i>
+                    </div>
+                    <ul class="bui-list">
+                        <li class="bui-btn" value="停车时长">停车时长</li>
+                        <li class="bui-btn" value="一周以内">一周以内</li>
+                        <li class="bui-btn" value="一到三个月">一到三个月</li>
+                        <li class="bui-btn" value="三个月以上">三个月以上</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul id="stall2">
+        	 <li class="bui-btn bui-fluid" :rid="rental.r_id" v-for="rental in message" onclick="detail(this)" >
+                <div  class="span6" >
+                    <p style="text-align: left;font-size: .5rem;color: black;font-weight: 500;">
+                    {{rental.carportBean.cp_community}}
+                    	<span style="font-size: .2rem">18km</span>
+                    </p>
+                </div>
+                <div style="text-align: right;color: orange;font-weight: 500;font-size: .5rem;" >{{rental.r_price}}<span style="font-size: .1rem">元</span></div>
+                  <div style="text-align: left;" class="span12">
+                     <span >{{rental.carportBean.cp_address}}</span>
+                </div>
+            </li>
+        </ul>
+</div>

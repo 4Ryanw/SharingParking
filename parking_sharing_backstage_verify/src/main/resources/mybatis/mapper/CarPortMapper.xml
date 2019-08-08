@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.dao.ICarPortDao">
+	<resultMap type="CarPortBean" id="carPortMap">
+		<id property="id" column="cp_id" />
+		<result property="address" column="cp_address" />
+		<result property="certificateNumber" column="cp_certificateNumber"/>
+		<result property="certificate" column="cp_certificate"/>
+		<result property="status" column="cp_status"/>
+		<result property="number" column="cp_number"/>
+		<result property="createTime" column="cp_createtime"/>
+		<collection property="userBean" column="cp_owner_id" select="com.project.dao.IUserDao.findUserById"/>
+	</resultMap>
+	
+	<select id="findCarPortById" parameterType="int" resultMap="carPortMap">
+		SELECT * FROM t_carport WHERE cp_id=#{id}
+	</select>
+	
+	<!-- 通过状态查询 -->	
+	<select id="findCarPortByStatus" parameterType="int" resultMap="carPortMap">
+		SELECT * FROM t_carport WHERE cp_status=#{id}
+	</select>
+	
+	<!-- 通过状态分页查询 -->
+	<select id="findCarPortByStatusAndPage" resultMap="carPortMap">
+		SELECT * FROM t_carport WHERE cp_status=#{status} LIMIT #{beginIndex},#{size}
+	</select>
+</mapper>
+ 

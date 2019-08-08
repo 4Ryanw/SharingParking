@@ -1,0 +1,99 @@
+
+  <body>
+  	<!--头部-->
+  	<header  class="bui-bar" >
+  	<!--城市选择-->
+			<div  id="uiDoropdownArea" class="bui-dropdown " >
+			<div style="color: white;;background-color: #39A4FF;border: 0px;" class="bui-btn bui-box">
+				<div  class="span1"></div>
+				<i style="color: white;" class="icon-dropdown"></i>
+				</div>
+			</div>
+			<!--搜索框-->
+			<div class="bui-bar-main" >
+	      <div id="btnSearchDialog" class="bui-input" >
+	         <i class="icon-search"></i><span class="placeholder">搜索</span>
+	      </div>
+   		</div>
+		<div style="text-align: center;" class="bui-bar-right">
+				<i style="color: white;font-size:20px;margin-top: 12px;" class="icon-scan"></i>
+		</div>
+	</header>
+	
+	<!--弹出的搜索框-->
+      <div id="uiDialog" class="bui-dialog" style="display: none;">
+			    <div class="bui-bar">
+			        <div class="bui-bar-left">
+			            <a class="bui-btn" id="btnBack"><i class="icon-back"></i></a>
+			        </div>
+			        <div class="bui-bar-main">
+			            <div id="searchbar" class="bui-input ring mini">
+			              <i class="icon-search"></i>
+			              <input type="search" value="" placeholder="请输入关键字"/>
+			            </div>
+			        </div>
+			        <div class="bui-bar-right">
+			            <div id="btnSearch" class="bui-btn">搜索</div>  
+			        </div>
+			    </div>
+							            <!-- 列表控件结构 -->
+			      <div id="scrollSearch" class="bui-scroll">
+			        <div class="bui-scroll-head"></div>
+			        <!-- 绑定vue用 -->
+			        <div class="bui-scroll-main" id="scroll-main">
+			          <ul class="bui-list">
+			          	<li class="bui-btn bui-box">
+					            <div class="bui-thumbnail " data-sub="热门"><img src="images/banner03.png" alt=""></div>
+					            <div class="span1">
+					                <h3 class="item-title">快乐车库</h3>
+					                <p class="item-text">天府三街</p>
+					                <p class="item-text">12公里</p>
+					            </div>
+					            <span class="price"><i>￥</i>12</span>
+					        </li>
+			          </ul> 
+			        </div>
+			        <div class="bui-scroll-foot"></div>
+			      </div>
+			    </div>
+
+	
+    <div class="bui-page" id="fujin">
+      <!-- 固定顶部区 -->
+      <main>
+        <!-- 焦点图 -->
+        <div id="uiSlide" class="bui-slide"></div>
+        <!-- 附近车位 -->
+        <div   class="part-title" >附近车位</div>
+        <ul class="bui-list bui-list-thumbnail" >
+            <li class="bui-btn bui-box" v-for="rental in message" onclick="detail(this)" :rid="rental.r_id">
+                <div class="bui-thumbnail bui-sub" data-sub="热门"><img src="images/banner04.png" alt=""></div>
+                <div class="span1">
+                    <h3 class="item-title">{{rental.carportBean.cp_community}}</h3>
+                    <p class="item-text">{{rental.carportBean.cp_address}}</p>
+                    <p class="item-text">6公里</p>
+                </div>
+                <span class="price"><i>￥</i>{{rental.r_price}}</span>
+            </li>
+        </ul>
+      </main>
+      
+      
+    
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/zepto.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/buijs/lib/latest/bui.js"></script>
+    <script>
+    	var url = "/carport/findAll"
+        axios.get(url).then(function(response) {
+       	 vm.message= response.data;
+        })
+     
+	    var vm=new Vue({
+	 		el:"#fujin",
+	 		data:{
+	 			message:[]}
+	 		})
+    </script>
+  </body>

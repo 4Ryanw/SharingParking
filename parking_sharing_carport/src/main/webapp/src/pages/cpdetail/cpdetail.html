@@ -1,0 +1,116 @@
+<style>
+    .bui-list .span1 .item-text {
+        margin-bottom: .2rem;
+    }
+    .bui-list .span1 .item-text:last-child {
+        margin-bottom: 0;
+    }
+   .pic{
+   		height: 2rem;
+   		width: 2rem;
+   		overflow:hidden;
+   }
+   .bui-list img{
+   	width: 100%;
+   	height: 100%;
+   }
+   .information li{
+   padding-bottom: 30%;
+   }
+   .personal-img {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background:#fff;
+        /* border: 2px solid #fff; */
+        overflow: hidden;
+        margin: 0 auto .2rem auto;
+        text-align: center;
+    }
+    #carporder li{
+    padding-bottom: 5%;
+    }
+  
+</style>
+<div  class="bui-page" id="cpxiangqing">
+	<header class="bui-bar">
+		<div class="bui-bar-left">
+            <a class="bui-btn btn-back"><i class="icon-back"></i></a>
+		</div>
+		<div class="bui-bar-main">车位管理</div>
+		<div class="bui-bar-right">
+		</div>
+	</header>
+	<main>
+        <div class="bui-page" >
+	
+        	<div style="width: 100%;margin: ;">
+        		<img src="images/banner02.png" />
+        	</div>
+        	
+        	<div style="padding: .4rem;background-color: white;">
+        		<p style="font-size: .6rem;color: black;height: 1.2rem;">{{carportBean.cp_community}}</p>
+        		<p>{{carportBean.cp_address}} <span>{{carportBean.cp_number}}</span></p> 
+        		<p>证书编号:No.{{carportBean.cp_certificateNumber}}</p>
+				<hr style="height: .05rem;margin-bottom: .2rem;"/>
+				<ul v-if="status==1|status==2" class="bui-list bui-select-form">
+					<li class="bui-btn bui-box ">
+		                <label class="bui-label span1" for="phonenumber">价格:</label>
+		                <div class="span1">
+		                    <div class="bui-input user-input">
+		                       <input id="fabuprice" v-if="status==1"  type="number" class="bui-input"  placeholder="请输入价格">
+		                       <input   :value="rentalBean.r_price" v-if="status==2"  style="text-align: center;font-size: .5rem;" readonly="readonly" type="number" class="bui-input" >
+		                    	元/天
+		                    </div>
+		                </div>
+		            </li>
+		            <li    class="bui-btn bui-box" >
+		                <label>起始日期</label>
+		                <div class="span1"><input type="text" style="text-align: center;" id="stimepicker" readonly class="bui-input"></div>
+		                <i class="icon-listright"></i>
+		            </li>
+		            <li  class="bui-btn bui-box" >
+		                <label>结束日期</label>
+		                <div   class="span1"><input type="text" style="text-align: center;" id="etimepicker" readonly class="bui-input"></div>
+		                <i class="icon-listright"></i>
+		            </li>
+       			</ul>
+        	</div>
+        </div>
+	</main>
+	<footer  style="height: 1rem;" class="bui-box">
+		<div  v-if="status==2" id="btnOpenDown" class="bui-btn span1 round ">查看订单 <span v-if="list.length!=0" class="bui-badges" id="bui-badges">{{list.length}}</span></div>
+		<div  @click="fabuClick" v-if="status==1" class="bui-btn span1 round" style="background-color: #FF5A60;color: white;">发布</div>
+		<div @click="cancelClick" v-if="status==2" class="bui-btn span1 round" style="background-color: #FF5A60;color: white;">撤下</div>
+		<div v-if="status==3|status==0" class="span1  round " disabled="disabled" style="margin: auto;text-align:center;background-color:whitesmoke color: black;">待审核</div>
+	</footer>
+
+	<!-- 底部弹出框	 -->
+<div id="dialogDown" class="bui-dialog" style="height:80%;display: none;">
+    <div  class="bui-dialog-head">车位订单</div>
+    <div v-for="order in list">
+    <div  class="bui-box" style="width:100%">
+    	<div style="margin-right:.4rem;" class="personal-img ">
+		<img src="images/headimg.png">
+		</div>
+		<div id="carporder" class="span1">
+			<ul style="text-align:left">
+				<li>用户名:{{order.userBean.u_username}}</li>
+				 <li >时间:  {{order.o_stime}} 到</li>
+				<li style="margin-left:.8rem">{{order.o_etime}}</li>
+				<li>备注:{{order.o_words}}</li>
+			</ul>
+		</div>
+    </div>
+     <div  class="bui-box">
+     <!-- <div v-if="order.o_status==1" style="text-align:center;height:50%;width:3rem;margin-top:5%" class=" round bui-btn success disabled" >已接受</div> 
+		<div v-if="order.o_status==2"  style="text-align:center;height:50%;width:3rem;margin-top:5%" class=" round bui-btn danger disabled" >已拒绝</div>   -->
+		  <div had="1" :oid="order.o_id" @click="handle" style="text-align:center;width:1.5rem;margin-left:20%" class=" round bui-btn success" >接受</div>
+		<div had="2" :oid="order.o_id"  @click="handle"  style="text-align:center;width:1.5rem;margin-left:20%" class=" round bui-btn  danger" >拒绝</div> 
+    </div>
+    <hr style="margin-top:10px;height:.1rem">
+   </div>
+    <div class="bui-dialog-close"><i class="icon-listdown"></i></div>
+</div>
+</div>
+    

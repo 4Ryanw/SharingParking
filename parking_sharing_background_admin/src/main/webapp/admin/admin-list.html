@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <!-- <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" /> -->
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <style>
+        	.danger{background-color: red;}
+        </style>
+        
+    </head>
+    <body >
+        <div class="layui-fluid" id="app">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input inp_name">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="button" class="layui-btn" @click="selectByName()" value="搜索">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-header">
+                            <button class="layui-btn" onclick="xadmin.open('添加管理员','./admin-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                              <thead>
+                                <tr>
+                                  <th>ID</th>
+                                  <th>登录名</th>
+                                  <th>手机</th>
+                                  <th>角色</th>
+                                  <th>操作</th>
+                              </thead>
+                              
+                              <tbody v-if="ad.length==0"><tr><td colspan="7" style="text-align:center;">未查到该管理员</td></tr></tbody>
+                              <tbody v-else="ad.length!=0">
+                                <tr v-for="(admin,index) in ad">
+                                  <td class="a_number">{{admin.a_id}}</td>
+                                  <td>{{admin.a_name}}</td>
+                                  <td>{{admin.a_phone}}</td>
+                                  <td v-if="admin.a_role==0">管理员</td>
+                                  <td v-else="admin.a_role==1">超级管理员</td>
+                                  <td class="td-manage" v-if="admin.a_role==0">
+                                      <input type="button" class="layui-icon layui-btn danger" @click="dele(admin.a_id)" value="删除">
+                          
+                                      <input type="button" class="layui-icon layui-btn" @click="updateAu(admin.a_id)" value="权限">
+                                  </td>
+                                  <td class="td-manage" v-else="amin.a_role==1">
+                                      <span>不可更改</span>
+                          
+                                  </td>
+                                </tr>
+                              </tbody>
+                              
+                            </table>
+                        </div>
+                        <div class="layui-card-body ">
+                            <div class="page">
+                                <div>
+                                  <a   @click="firstPage">首页</a>
+                                  <a   @click="prevPage">上一页</a>
+                                  <a>{{page}}/{{pageNumber}}</a>
+                                  <a   @click="nextPage">下一页</a>
+                                  <a   @click="lastPage">末页</a>
+                                  <a>总人数：{{adminNumber}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="../js/jQuery-2.2.2-min.js"></script>
+        <script type="text/javascript" src="../js/vue.js" ></script>
+		<script type="text/javascript" src="../js/axios.min.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			var selectBtn = $(".layui-show-xs-block .layui-btn")
+			
+			var checkInp = $("th input")
+			checkInp.click(function(){
+				if(checkInp.checked == true){
+					alert(1)
+				}else{
+					alert(2)
+				}
+			})
+				
+		})	
+		</script>
+        <script type="text/javascript">
+        	var vm = new Vue({
+        		el:"#app",
+        		data:{
+        		      ad:[],
+        		      page:0,
+	  	        	  size:8,
+	  	        	  pageNumber:0,	//总页数
+	  	        	  adminNumber:0,
+        		},
+        		created(){
+        			this.page += 1;
+        			axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size)
+        			.then(res=>{
+        				console.info(res.data)
+        				this.ad = res.data.list;
+        				this.pageNumber = res.data.pageNumber;
+        				this.adminNumber = res.data.adminNumber;
+        			})
+        			.catch(res=>{
+        				console.info(res);
+        			})
+        		},
+        		methods:{
+        			dele:function(a_id){
+        				if (confirm("确认删除当前管理员？")) {
+        					axios.post("/admin/deleteAdmin?a_id="+a_id)
+            				.then(res=>{
+           						axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size)
+           	        			.then(res=>{
+           	        				this.ad = res.data.list;
+           	        				this.pageNumber = res.data.pageNumber;
+           	        				this.adminNumber = res.data.adminNumber;
+           	        			})
+           	        			.catch(res=>{
+           	        				console.info(res);
+           	        			})
+            				})
+            				.catch(res=>{
+            					console.info(res);
+            				})
+						}
+        			},
+        			updateAu:function(a_id){
+        				location.href="admin-rule.html?a_id="+a_id;
+        			},
+        			selectByName:function(){
+        				var selectName = $(".inp_name").val()
+        				if(selectName==""){
+        					this.page = 1;
+                			axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size)
+                			.then(res=>{
+                				console.info(res.data)
+                				this.ad = res.data.list;
+                				this.pageNumber = res.data.pageNumber;
+                				this.adminNumber = res.data.adminNumber;
+                			})
+                			.catch(res=>{
+                				console.info(res);
+                			})
+        				}else{
+        					axios.get("/admin/selectByName?a_name="+selectName)
+            				.then(res=>{
+            					this.ad = res.data;
+            					this.page = 1;
+            					this.pageNumber = 1;
+            					this.adminNumber = 1;
+            				})
+        				}
+        				
+        			},
+        			prevPage:function(){
+	        			if(this.page > 1){
+	        				this.page -= 1;
+	        				axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size).then(res=>{
+		        				this.ad = res.data.list;
+	            				this.pageNumber = res.data.pageNumber;
+	            				this.adminNumber = res.data.adminNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			};
+	        		},
+	        		nextPage:function(){
+	        			if(this.page < this.pageNumber){
+	        				this.page += 1;
+	        				axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size).then(res=>{
+		        				this.ad = res.data.list;
+	            				this.pageNumber = res.data.pageNumber;
+	            				this.adminNumber = res.data.adminNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			}
+	        		},
+	        		firstPage:function(){
+	        			if(this.page != 1){
+	        				this.page = 1;
+	        				axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size).then(res=>{
+		        				this.ad = res.data.list;
+	            				this.pageNumber = res.data.pageNumber;
+	            				this.adminNumber = res.data.adminNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			}
+	        		},
+	        		lastPage:function(){
+	        			if(this.page != this.pageNumber){
+	        				this.page = this.pageNumber;
+	        				axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size).then(res=>{
+		        				this.ad = res.data.list;
+	            				this.pageNumber = res.data.pageNumber;
+	            				this.adminNumber = res.data.adminNumber;
+	        				}).catch(function (err) {
+	        					console.log(err);
+	        				});
+	        			}
+	        		},
+	        		sendRequest:function(){
+	        			axios.get("/admin/findAllAdmin?page="+this.page+"&size="+this.size).then(res=>{
+	        				this.ad = res.data.list;
+	        				this.pageNumber = res.data.pageNumber;
+	        				this.adminNumber = res.data.adminNumber;
+        				}).catch(function (err) {
+        					console.log(err);
+        				});
+	        		}
+        		}
+        	})
+        </script>
+    </body>
+    
+    
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+</html>

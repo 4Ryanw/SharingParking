@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://www.layui.com/admin/pro/#/set/user/password -->
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>管理员信息修改</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../css/layui.css" media="all">
+		<script src="../layui/hm.js"></script>
+		<script>
+			/^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
+		</script>
+		<link id="layuicss-layer" rel="stylesheet" href="../css/layer.css" media="all">
+		<link id="layuicss-layuiAdmin" rel="stylesheet" href="../css/admin.css" media="all">
+		<style>
+			.layui-fluid{width: 22rem;height: 19.6875rem;}
+			.layui-card-header{text-align: center;}
+			.pwd_error{display: none;}
+			.layui-card{background-color: gainsboro;box-shadow:5px 2px 6px #000;} 
+			.layui-layout-admin,.layui-body {left: 0rem!important;}
+			.layui-form-item input{height: 1.625rem;width: 10rem!important;}
+			#LAY_app_body{padding-left: 50px;}
+		</style>
+	</head>
+	<body layadmin-themealias="default" class="layui-layout-body">
+		<div id="LAY_app" class="layadmin-tabspage-none">
+			<div class="layui-layout layui-layout-admin">
+				<!-- 主体内容 -->
+				<div class="layui-body" id="LAY_app_body">
+					<div class="layui-card-body" pad15="">
+
+						<div class="layui-form" lay-filter="">
+							<div class="layui-form-item">
+								<label class="layui-form-label">用户名</label>
+								<div class="layui-input-inline">
+									<input type="text" readonly="readonly" lay-vertype="tips" autocomplete="off" id="LAY_password" class="layui-input a_name">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">工号</label>
+								<div class="layui-input-inline">
+									<input type="text" readonly="readonly" lay-vertype="tips" autocomplete="off" id="LAY_password" class="layui-input a_number">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">新密码</label>
+								<div class="layui-input-inline">
+									<input type="password"  name="a_pwd" lay-verify="pass" lay-vertype="tips" autocomplete="off" id="LAY_password"
+									 class="layui-input a_pwd">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">确认密码</label>
+								<div class="layui-input-inline">
+									<input type="password" name="a_rePwd" lay-verify="repass" lay-vertype="tips" autocomplete="off" class="layui-input a_rePwd">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">手机号</label>
+								<div class="layui-input-inline">
+									<input type="text" class="a_phone" name="a_phone" lay-verify="repass" lay-vertype="tips" autocomplete="off" class="layui-input" value="" >
+								</div>
+							</div>
+							<div class="layui-form-item" style="padding-left: 50px;">
+								<div class="layui-input-block">
+									<button class="layui-btn layui-btn-primary sumbitbtn" lay-filter="setmypass">确认修改</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!-- 辅助元素，一般用于移动设备下遮罩 -->
+				<div class="layadmin-body-shade" layadmin-event="shade"></div>
+
+			</div>
+		</div>
+		<script src="../layui/layui.js"></script>
+		
+		<style id="LAY_layadmin_theme">
+			.layui-form-label{width: 3.825rem!important;}
+			.layui-side-menu,
+			.layadmin-pagetabs .layui-tab-title li:after,
+			.layadmin-pagetabs .layui-tab-title li.layui-this:after,
+			.layui-layer-admin .layui-layer-title,
+			.layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child {
+				background-color: #20222A !important;
+			}
+			.layui-nav-tree .layui-this,
+			.layui-nav-tree .layui-this>a,
+			.layui-nav-tree .layui-nav-child dd.layui-this,
+			.layui-nav-tree .layui-nav-child dd.layui-this a {
+				background-color: #009688 !important;
+			}
+
+			.layui-layout-admin .layui-logo {
+				background-color: #20222A !important;
+			}
+		</style>
+		<div class="layui-layer-move"></div>
+		
+		<script type="text/javascript" src="../js/jQuery-2.2.2-min.js"></script>
+		<script>
+			
+			var a_pwd = $(".a_pwd")
+			var a_rePwd = $(".a_rePwd")
+			var a_phone = $(".a_phone")
+			var a_name = $(".a_name")
+			var a_number = $(".a_number")
+			//回显手机号
+			$(function(){
+				$.ajax({
+					type:"get",
+					url:"http://127.0.0.1:9002/admin/findAdmin",
+					success:function(mes){
+						
+						a_phone.val(mes.a_phone);
+						a_name.attr("placeholder",mes.a_name);
+						a_number.attr("placeholder",mes.a_id);
+					}
+				})
+			})
+			//手机验证
+			function yanzheng(){
+				var regx1 = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+				
+				if (!regx1.test(a_phone.val()) && a_phone.val()!="") {
+					return false;
+				}
+				return true;
+			}
+			//提交修改
+			$(".sumbitbtn").click(function(){
+				if (a_pwd.val()=="") {
+					a_pwd.attr("placeholder","请输入密码");
+					return;
+				} else if(!isSame(a_pwd.val(),a_rePwd.val())){
+					a_rePwd.val("");
+					a_rePwd.attr("placeholder","两次密码不一致");
+					return;
+				} else if(!yanzheng()){
+					
+					a_phone.val("");
+					a_phone.attr("placeholder","手机号格式有误");
+					return;
+				}
+				
+				$.ajax({
+					type:"get",
+					url:"http://127.0.0.1:9002/admin/updateInfo",
+					asycn:true,
+					data:"a_password="+a_pwd.val()+"&a_phone="+a_phone.val(),
+					success:function(mes){
+						console.info(mes)
+						if (mes==true) {
+							alert("修改成功")
+							location.href="http://127.0.0.1:9002/admin/login.html"
+						} else{
+							alert("修改失败")
+						}
+					}
+				})
+			})
+			//判断两次密码是否一致
+			function isSame(pwd,rePwd){
+				if (pwd==rePwd) {
+					return true;
+				}
+					return false;
+			}
+		</script>
+	</body>
+</html>
+
